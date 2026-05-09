@@ -66,13 +66,13 @@ def home():
         # Center top text
         top_position = (
             (width - top_text_width) / 2,
-            30
+            50
         )
 
         # Center bottom text
         bottom_position = (
             (width - bottom_text_width) / 2,
-            height - font_size - 40
+            height - font_size - 80
         )
 
         # Function for outline text
