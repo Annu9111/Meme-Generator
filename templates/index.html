@@ -1,48 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Meme Generator</title>
 
     <style>
 
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body{
-            background: #121212;
+            background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
             color: white;
-            font-family: Arial;
-            text-align: center;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 30px;
         }
 
+        .container{
+            width: 100%;
+            max-width: 900px;
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
         h1{
-            font-size: 45px;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        p{
+            color: #bbbbbb;
+            margin-bottom: 30px;
+            font-size: 18px;
         }
 
         form{
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
-        input{
-            margin: 10px;
+        input[type="file"]{
+            background: #2a2a2a;
+            color: white;
             padding: 12px;
-            width: 300px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: none;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"]{
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            background: #2a2a2a;
+            color: white;
+            font-size: 16px;
+        }
+
+        input[type="text"]::placeholder{
+            color: #aaaaaa;
         }
 
         button{
-            padding: 12px 25px;
+            padding: 15px 35px;
             border: none;
+            border-radius: 12px;
             background: orange;
             color: white;
-            border-radius: 10px;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
         }
 
-        img{
-            margin-top: 30px;
-            max-width: 600px;
+        button:hover{
+            background: #ff8800;
+            transform: scale(1.05);
+        }
+
+        .meme-section{
+            margin-top: 40px;
+        }
+
+        .meme-section h2{
+            margin-bottom: 20px;
+            font-size: 35px;
+        }
+
+        .meme-image{
+            width: 100%;
+            max-width: 700px;
             border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .download-btn{
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+        }
+
+        .download-btn button{
+            background: #00b894;
+        }
+
+        .download-btn button:hover{
+            background: #00a383;
+        }
+
+        .footer{
+            margin-top: 40px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px){
+
+            .container{
+                padding: 25px;
+            }
+
+            h1{
+                font-size: 38px;
+            }
+
+            button{
+                width: 100%;
+            }
+
         }
 
     </style>
@@ -51,30 +153,68 @@
 
 <body>
 
-    <h1>😂 Meme Generator</h1>
+    <div class="container">
 
-    <form method="POST" enctype="multipart/form-data">
+        <h1>😂 Meme Generator</h1>
 
-        <input type="file" name="image" required>
-        <br>
+        <p>Create funny memes instantly using Python + Flask</p>
 
-        <input type="text" name="top_text" placeholder="Top Text">
-        <br>
+        <form method="POST" enctype="multipart/form-data">
 
-        <input type="text" name="bottom_text" placeholder="Bottom Text">
-        <br>
+            <input type="file" name="image" required>
 
-        <button type="submit">Generate Meme</button>
+            <input 
+                type="text" 
+                name="top_text" 
+                placeholder="Enter Top Text"
+            >
 
-    </form>
+            <input 
+                type="text" 
+                name="bottom_text" 
+                placeholder="Enter Bottom Text"
+            >
 
-    {% if meme_image %}
+            <button type="submit">
+                Generate Meme
+            </button>
 
-        <h2>Your Meme</h2>
+        </form>
 
-        <img src="{{ meme_image }}">
+        {% if meme_image %}
 
-    {% endif %}
+        <div class="meme-section">
+
+            <h2>Your Meme 🎉</h2>
+
+            <img 
+                src="{{ meme_image }}" 
+                class="meme-image"
+            >
+
+            <br>
+
+            <a 
+                href="{{ meme_image }}" 
+                download
+                class="download-btn"
+            >
+
+                <button>
+                    Download Meme
+                </button>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+        <div class="footer">
+            Made with ❤️ using Flask & Pillow
+        </div>
+
+    </div>
 
 </body>
 </html>
