@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meme Generator</title>
+
+    <style>
+
+        body{
+            background: #121212;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 30px;
+        }
+
+        h1{
+            font-size: 45px;
+        }
+
+        form{
+            margin-top: 30px;
+        }
+
+        input{
+            margin: 10px;
+            padding: 12px;
+            width: 300px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        button{
+            padding: 12px 25px;
+            border: none;
+            background: orange;
+            color: white;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        img{
+            margin-top: 30px;
+            max-width: 600px;
+            border-radius: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>😂 Meme Generator</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="image" required>
+        <br>
+
+        <input type="text" name="top_text" placeholder="Top Text">
+        <br>
+
+        <input type="text" name="bottom_text" placeholder="Bottom Text">
+        <br>
+
+        <button type="submit">Generate Meme</button>
+
+    </form>
+
+    {% if meme_image %}
+
+        <h2>Your Meme</h2>
+
+        <img src="{{ meme_image }}">
+
+    {% endif %}
+
+</body>
+</html>
