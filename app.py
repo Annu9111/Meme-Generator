@@ -65,7 +65,10 @@ def home():
         height = img.height
 
         # Dynamic font size
-        font_size = int(width / 12)
+        font_size = int(width / 10)
+        # Reduce font size for long text
+        if len(top_text) > 10 or len(bottom_text) > 10:
+            font_size = int(width / 18)
 
         # Load font
         try:
