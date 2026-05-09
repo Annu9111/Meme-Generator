@@ -12,7 +12,7 @@ Users can:
 
 # 🚀 Live Demo
 
-https://meme-generator-wepg.onrender.com
+https://meme-generator-wepg.onrender.com/
 
 ---
 
@@ -166,7 +166,7 @@ Gunicorn
 
 # 📸 Screenshots
 
-Add your screenshots here later.
+![Meme Generator Screenshot](screenshot.png)
 
 ---
 
