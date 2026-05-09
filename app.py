@@ -18,8 +18,10 @@ def home():
 
     if request.method == "POST":
 
+        # Get uploaded image
         image = request.files["image"]
 
+        # Get texts
         top_text = request.form["top_text"]
         bottom_text = request.form["bottom_text"]
 
@@ -34,14 +36,14 @@ def home():
         # Open image
         img = Image.open(image_path)
 
-        # Draw object
+        # Create draw object
         draw = ImageDraw.Draw(img)
 
-        # Image width
+        # Image dimensions
         width = img.width
         height = img.height
 
-        # Font size
+        # Dynamic font size
         font_size = int(width / 12)
 
         # Load font
@@ -50,20 +52,38 @@ def home():
         except:
             font = ImageFont.load_default()
 
-        # TOP TEXT POSITION
-        top_position = (50, 30)
+        # Calculate text widths
+        top_text_width = draw.textlength(
+            top_text.upper(),
+            font=font
+        )
 
-        # BOTTOM TEXT POSITION
-        bottom_position = (50, height - 100)
+        bottom_text_width = draw.textlength(
+            bottom_text.upper(),
+            font=font
+        )
 
-        # Draw outline function
+        # Center top text
+        top_position = (
+            (width - top_text_width) / 2,
+            30
+        )
+
+        # Center bottom text
+        bottom_position = (
+            (width - bottom_text_width) / 2,
+            height - font_size - 40
+        )
+
+        # Function for outline text
         def draw_outline_text(position, text):
 
             x, y = position
 
             # Black outline
-            for i in range(-2, 3):
-                for j in range(-2, 3):
+            for i in range(-3, 4):
+                for j in range(-3, 4):
+
                     draw.text(
                         (x + i, y + j),
                         text,
@@ -79,20 +99,31 @@ def home():
                 fill="white"
             )
 
-        # Draw texts
-        draw_outline_text(top_position, top_text.upper())
-        draw_outline_text(bottom_position, bottom_text.upper())
+        # Draw top text
+        draw_outline_text(
+            top_position,
+            top_text.upper()
+        )
 
-        # Save meme
+        # Draw bottom text
+        draw_outline_text(
+            bottom_position,
+            bottom_text.upper()
+        )
+
+        # Generated meme filename
         generated_filename = "meme_" + image.filename
 
+        # Save path
         generated_path = os.path.join(
             app.config["GENERATED_FOLDER"],
             generated_filename
         )
 
+        # Save meme image
         img.save(generated_path)
 
+        # Send image path to HTML
         meme_image = generated_path
 
     return render_template(
