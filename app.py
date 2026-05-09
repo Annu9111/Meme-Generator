@@ -4,11 +4,28 @@ import os
 
 app = Flask(__name__)
 
+# Folder paths
 UPLOAD_FOLDER = "static/uploads"
 GENERATED_FOLDER = "static/generated"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["GENERATED_FOLDER"] = GENERATED_FOLDER
+
+
+# Function to delete old files
+def clear_old_files(folder):
+
+    files = os.listdir(folder)
+
+    for file in files:
+
+        file_path = os.path.join(folder, file)
+
+        try:
+            os.remove(file_path)
+
+        except:
+            pass
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -17,6 +34,10 @@ def home():
     meme_image = None
 
     if request.method == "POST":
+
+        # Delete old files
+        clear_old_files(UPLOAD_FOLDER)
+        clear_old_files(GENERATED_FOLDER)
 
         # Get uploaded image
         image = request.files["image"]
@@ -36,7 +57,7 @@ def home():
         # Open image
         img = Image.open(image_path)
 
-        # Create draw object
+        # Create drawing object
         draw = ImageDraw.Draw(img)
 
         # Image dimensions
@@ -48,34 +69,42 @@ def home():
 
         # Load font
         try:
-            font = ImageFont.truetype("arial.ttf", font_size)
+            font = ImageFont.truetype(
+                "arial.ttf",
+                font_size
+            )
+
         except:
             font = ImageFont.load_default()
 
+        # Convert text to uppercase
+        top_text = top_text.upper()
+        bottom_text = bottom_text.upper()
+
         # Calculate text widths
         top_text_width = draw.textlength(
-            top_text.upper(),
+            top_text,
             font=font
         )
 
         bottom_text_width = draw.textlength(
-            bottom_text.upper(),
+            bottom_text,
             font=font
         )
 
-        # Center top text
+        # Top text position
         top_position = (
             (width - top_text_width) / 2,
             50
         )
 
-        # Center bottom text
+        # Bottom text position
         bottom_position = (
             (width - bottom_text_width) / 2,
             height - font_size - 80
         )
 
-        # Function for outline text
+        # Function for meme outline text
         def draw_outline_text(position, text):
 
             x, y = position
@@ -91,7 +120,7 @@ def home():
                         fill="black"
                     )
 
-            # Main white text
+            # White main text
             draw.text(
                 position,
                 text,
@@ -102,25 +131,25 @@ def home():
         # Draw top text
         draw_outline_text(
             top_position,
-            top_text.upper()
+            top_text
         )
 
         # Draw bottom text
         draw_outline_text(
             bottom_position,
-            bottom_text.upper()
+            bottom_text
         )
 
         # Generated meme filename
         generated_filename = "meme_" + image.filename
 
-        # Save path
+        # Generated path
         generated_path = os.path.join(
             app.config["GENERATED_FOLDER"],
             generated_filename
         )
 
-        # Save meme image
+        # Save final meme
         img.save(generated_path)
 
         # Send image path to HTML
